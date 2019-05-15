@@ -51,6 +51,36 @@ class LexerClass
                     program.add(KeyWordsIf);
                     //System.out.println(words[j]+"  KeyWord");
                 }
+                else if (Pattern.matches("^List$",words[j]))
+                {
+                    ListOfLexems KeyWordList = new ListOfLexems(words[j],"KeyWordList");
+                    program.add(KeyWordList);
+                    //	System.out.println(words[j]+"  Equally");
+                }
+                else if (Pattern.matches("^remove$",words[j]))
+                {
+                    ListOfLexems KeyWordRemove = new ListOfLexems(words[j],"KeyWordRemove");
+                    program.add(KeyWordRemove);
+                    //	System.out.println(words[j]+"  Equally");
+                }
+                else if (Pattern.matches("^Add$",words[j]))
+                {
+                    ListOfLexems KeyWordAdd = new ListOfLexems(words[j],"KeyWordAdd");
+                    program.add(KeyWordAdd);
+                    //	System.out.println(words[j]+"  Equally");
+                }
+                else if (Pattern.matches("^getElement$",words[j]))
+                {
+                    ListOfLexems KeyWordGetElement = new ListOfLexems(words[j],"KeyWordGetElement");
+                    program.add(KeyWordGetElement);
+                    //	System.out.println(words[j]+"  Equally");
+                }
+                else if (Pattern.matches("^getSize$",words[j]))
+                {
+                    ListOfLexems KeyWordGetSize = new ListOfLexems(words[j],"KeyWordGetSize");
+                    program.add(KeyWordGetSize);
+                    //	System.out.println(words[j]+"  Equally");
+                }
 
                 else if (Pattern.matches("^while$",words[j]))
                 {
@@ -91,7 +121,7 @@ class LexerClass
                             //	System.out.println(words[j]+"  Operation");
                         }
 
-                        else if (chars[k]=='>'|chars[k]=='<'|Pattern.matches("!=|==|>=|<=",words[j])) /// äîèñïğàâèòü
+                        else if (chars[k]=='>'|chars[k]=='<'|Pattern.matches("!=|==|>=|<=",words[j])) /// Ğ´Ğ¾Ğ¸ÑĞ¿Ñ€Ğ°Ğ²Ğ¸Ñ‚ÑŒ
                         {
                             ListOfLexems booleanOP = new ListOfLexems(Sem,"booleanOP");
                             program.add(booleanOP);
@@ -119,6 +149,13 @@ class LexerClass
                             //	System.out.println(words[j]+"  Equally");
                         }
 
+                        else if (chars[k]==',')
+                        {
+                            ListOfLexems Comma = new ListOfLexems(Sem,"Comma");
+                            program.add(Comma);
+                            //	System.out.println(words[j]+"  Equally");
+                        }
+
                         else if (chars[k]=='(')
                         {
                             ListOfLexems Open_bracket = new ListOfLexems(Sem,"Open_bracket");
@@ -141,14 +178,14 @@ class LexerClass
                         }
 
 
-                        else if (Character.isDigit(chars[k]))  // äîğàáîòàòü
+                        else if (Character.isDigit(chars[k]))  // Ğ´Ğ¾Ñ€Ğ°Ğ±Ğ¾Ñ‚Ğ°Ñ‚ÑŒ
                         {
                             ListOfLexems Number = new ListOfLexems(Sem,"Number");
                             program.add(Number);
                             //	System.out.println(words[j]+"  Number");
                         }
 
-                        else if (Character.isLetter(chars[k])) // äîğàáîòàòü
+                        else if (Character.isLetter(chars[k])) // Ğ´Ğ¾Ñ€Ğ°Ğ±Ğ¾Ñ‚Ğ°Ñ‚ÑŒ
                         {
                             ListOfLexems Var = new ListOfLexems(Sem,"Var");
                             program.add(Var);
@@ -247,6 +284,18 @@ public class Lexer
 		Poliz object1 = new Poliz(program);
 //      System.out.println(parser);
         if (parser)
-		poliz = object1.Polish();
+		object1.Polish();
+/*
+    List a = new List ();
+
+    System.out.println(a.getSize());
+    a.addBack(1);
+    a.addBack(2);
+    a.addBack(4);
+        System.out.println(a.getSize());
+
+        System.out.println(a.removeBack());
+        System.out.println(a.getSize());
+        System.out.println(a.getElement(2)); */
     }
 }

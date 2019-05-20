@@ -2,13 +2,13 @@ package lexer;
 
 import java.util.ArrayList;
 import java.util.Stack;
-import java.util.regex.Pattern;
 
 public class Poliz {
     ArrayList<Data> data = new ArrayList<Data>();
     ArrayList<ListOfLexems> program = new ArrayList<ListOfLexems>();
     ArrayList<String> poliz = new ArrayList<String>();
     ArrayList<List> list = new ArrayList<List>();
+    ArrayList<HashSet>  hash = new ArrayList<HashSet>();
     int iPol = 0;
     int inter = 0;
 
@@ -27,7 +27,6 @@ public class Poliz {
         int k = poliz.size() - 3 + link(iPol) - iPol + 1; 
         if (Index(iPol) == program.size())
             k--;
-        //      System.out.println(k);//Stack<String> stack = new Stack<String>();
         poliz.add(Integer.toString(k));
 
         poliz.add(program.get(iPol + 6).lexem);
@@ -50,7 +49,7 @@ public class Poliz {
         poliz.add(Integer.toString(i + 3));
         poliz.add("!");
         iPol++;
-        //       System.out.println(poliz.get(k));
+
     }
 
 
@@ -63,10 +62,7 @@ public class Poliz {
         else if (i + 2 < program.size())
             if (program.get(i).lexem.equals("else") & program.get(i + 2).lexem.equals("}") & (i + 3) >= program.size())
                 k--;
-        //       System.out.println(k);
         poliz.add(Integer.toString(k));
-        //Stack<String> stack = new Stack<String>();
-        //	poliz.add(k);
         poliz.add(program.get(iPol + 2).lexem);
         poliz.add(program.get(iPol + 4).lexem);
         poliz.add(program.get(iPol + 3).lexem);
@@ -86,10 +82,9 @@ public class Poliz {
                     b++;
             } else b += 2;
         } else b++;
-        //       System.out.println(poliz.get(b));
         poliz.add(Integer.toString(b));
         poliz.add("!");
-        iPol++; // ??????? ???
+        iPol++; 
         if (iPol < program.size() - 1)
             if (program.get(iPol).lexem.equals("else"))
                 Else();
@@ -98,12 +93,10 @@ public class Poliz {
 
     public void Else() {
 
-        iPol += 2; // ????? ???
+        iPol += 2; 
 
         while (!program.get(iPol).lexem.equals("}"))
             convert();
-
-        //   if (iPol+1<program.size())
         iPol++;
 
     }
@@ -113,27 +106,19 @@ public class Poliz {
         int k = poliz.size() + link(iPol) - iPol + 1;
         if (Index(iPol) == program.size())
             k--;
-//        System.out.println(poliz.size());
-//        System.out.println(k);
-        //Stack<String> stack = new Stack<String>();
         poliz.add(Integer.toString(k));
         poliz.add(program.get(iPol + 2).lexem);
         poliz.add(program.get(iPol + 4).lexem);
         poliz.add(program.get(iPol + 3).lexem);
         poliz.add("!F");
-//		poliz.add(program.get(iPol+7).lexem);
 
         iPol += 7;
-//		System.out.println(program.size());
-//		System.out.println(iPol);
-//		System.out.println(program.get(iPol).lexem);
         while (!program.get(iPol).lexem.equals("}"))
             convert();
 
         poliz.add(Integer.toString(i));
         poliz.add("!");
         iPol++;
-//        System.out.println(poliz.get(k));
     }
 
     public int Index(int iPol) {
@@ -161,7 +146,6 @@ public class Poliz {
         int brace = 0;
         int minus = 0;
         do {
-//            System.out.println(program.get(a).lexem);
             if (program.get(a).lexem.equals("if")) {
                 brace++;
                 if (brace > 1) minus++;
@@ -182,11 +166,7 @@ public class Poliz {
 
             a++;
         } while (brace != 0);
-        //       if (program.size()==a)
-        //           minus--;
         a += minus;
-//        System.out.println(iPol);
-//        System.out.println(a-iPol);
         return (a);
     }
 
@@ -204,7 +184,6 @@ public class Poliz {
                 stack.push(program.get(iPol).lexem);
                 iPol++;
             } else if (program.get(iPol).lexem.equals("+") | program.get(iPol).lexem.equals("-")) {
-//                boolean flag = false;
                 while (!stack.empty())
                     if (stack.peek().equals("(") | stack.peek().equals("=")) {
                         stack.push(program.get(iPol).lexem);
@@ -213,9 +192,6 @@ public class Poliz {
                         break;
                     } else
                         poliz.add(stack.pop());
-//                if (!flag)
-//                stack.push(program.get(iPol).lexem);
-//                iPol++;
             } else if (program.get(iPol).lexem.equals("*") | program.get(iPol).lexem.equals("/")) {
                 if (stack.peek().equals("*") | stack.peek().equals("/")) {
                     poliz.add(stack.pop());
@@ -234,13 +210,10 @@ public class Poliz {
             }
         }
         if (program.get(iPol).value.equals("Semicolon")) {
-//			System.out.println(program.get(iPol).value == "Semicolon");
             while (!stack.empty())
                 poliz.add(stack.pop());
         }
-
         iPol++;
-
     }
 
     public boolean eq(String dataName) {
@@ -250,13 +223,6 @@ public class Poliz {
             }
         }
         return (false);
-    }
-
-    public int eqIndex(String dataName) {
-        for (int k = 0; k < data.size(); k++)
-            if (data.get(k).name.equals(dataName))
-                return (k);
-        return (0);  //  здесь искать причину ошибок
     }
 
     public void initialization() {
@@ -272,7 +238,9 @@ public class Poliz {
                 if (!eq(program.get(i).lexem))
                 if (!program.get(i-1).lexem.equals("List")&!program.get(i-1).lexem.equals("Add")&
                         !program.get(i-1).lexem.equals("remove")&!program.get(i-1).lexem.equals("getSize")&
-                        !program.get(i-1).lexem.equals("getElement"))
+                        !program.get(i-1).lexem.equals("getElement")&!program.get(i-1).lexem.equals("HashSet")
+                        &!program.get(i-1).lexem.equals("HashAdd")&!program.get(i-1).lexem.equals("HashRemove")
+                        &!program.get(i-1).lexem.equals("HashContain"))
                 {
                     Data variable = new Data(program.get(i).lexem, 0);
                     data.add(variable);
@@ -294,6 +262,41 @@ public class Poliz {
 
 
          interpreter();
+    }
+
+    public void myHash ()
+    {
+        poliz.add(program.get(iPol).lexem);
+        iPol++;
+        poliz.add(program.get(iPol).lexem);
+        iPol+=2;
+    }
+    public void myHashAdd ()
+    {
+        poliz.add(program.get(iPol).lexem);
+        iPol++;
+        poliz.add(program.get(iPol).lexem);
+        iPol+=2;
+        poliz.add(program.get(iPol).lexem);
+        iPol+=2;
+    }
+    public void myHashRemove ()
+    {
+        poliz.add(program.get(iPol).lexem);
+        iPol++;
+        poliz.add(program.get(iPol).lexem);
+        iPol+=2;
+        poliz.add(program.get(iPol).lexem);
+        iPol+=2;
+    }
+    public void myHashContain ()
+    {
+        poliz.add(program.get(iPol).lexem);
+        iPol++;
+        poliz.add(program.get(iPol).lexem);
+        iPol+=2;
+        poliz.add(program.get(iPol).lexem);
+        iPol+=2;
     }
     public void myList ()
     {
@@ -349,6 +352,14 @@ public class Poliz {
             myElements ();
         else if (program.get(iPol).value.equals("KeyWordGetSize"))
             mySize ();
+        else if (program.get(iPol).value.equals("KeyWordHashSet"))
+            myHash();
+        else if (program.get(iPol).value.equals("KeyWordHashAdd"))
+            myHashAdd();
+        else if (program.get(iPol).value.equals("KeyWordHashRemove"))
+            myHashRemove ();
+        else if (program.get(iPol).value.equals("KeyWordHashContain"))
+            myHashContain();
         else if (program.get(iPol).lexem.equals("while"))
             While();
         else if (program.get(iPol).lexem.equals("if"))
@@ -379,6 +390,14 @@ public class Poliz {
                 iSize();
             else if (poliz.get(inter).equals("getElement"))
                 iElement();
+            else if (poliz.get(inter).equals("HashSet"))
+                iHash();
+            else if (poliz.get(inter).equals("HashAdd"))
+                iHashAdd();
+            else if (poliz.get(inter).equals("HashRemove"))
+                iHashRemove();
+            else if (poliz.get(inter).equals("HashContain"))
+                iHashContain();
             else if (Character.isLetter(chars[0]))
                 VarInter();
             else if (Character.isDigit(chars[0])&poliz.get(inter+1).equals("!"))
@@ -387,6 +406,81 @@ public class Poliz {
                 LaraCircl();
             else return;
         }
+    }
+    public boolean existHash (String name)
+    {
+        for(int t=0;t<hash.size();t++)
+            if (hash.get(t).name.equals(name))
+                return true;
+        return false;
+    }
+    public void iHash ()
+    {  inter++;
+        if (!existHash(poliz.get(inter)))
+        {
+            HashSet a = new HashSet(poliz.get(inter));
+            hash.add(a);
+        }
+
+        else System.out.println("List doesn't exist");
+        inter++;
+
+    }
+    public void iHashAdd ()
+    {
+        inter++;
+        char[] chars = poliz.get(inter+1).toCharArray();
+        if (existHash(poliz.get(inter)))
+        {
+            for (int s=0;s<hash.size();s++)
+                if (poliz.get(inter).equals(hash.get(s).name))
+                    if (Character.isDigit(chars[0])) {
+                        hash.get(s).AddHash(Integer.parseInt(poliz.get(inter + 1)));
+                    } else  if (Character.isLetter(chars[0]))
+                        for (int h = 0; h < data.size(); h++)
+                            if (data.get(h).name.equals(poliz.get(inter+1)))
+                                hash.get(s).AddHash(data.get(h).value);
+
+        }
+        else System.out.println("This list isn't exist");
+        inter+=2;
+    }
+    public void iHashRemove ()
+    {  inter++;
+        char[] chars = poliz.get(inter+1).toCharArray();
+        if (existHash(poliz.get(inter)))
+        {
+            for (int s=0;s<hash.size();s++)
+                if (poliz.get(inter).equals(hash.get(s).name))
+                    if (Character.isDigit(chars[0])) {
+                        hash.get(s).remove(Integer.parseInt(poliz.get(inter + 1)));
+                    } else  if (Character.isLetter(chars[0]))
+                        for (int h = 0; h < data.size(); h++)
+                            if (data.get(h).name.equals(poliz.get(inter+1)))
+                                hash.get(s).remove(data.get(h).value);
+
+        }
+        else System.out.println("This list isn't exist");
+        inter+=2;
+
+    }
+    public void iHashContain ()
+    {   inter++;
+        char[] chars = poliz.get(inter+1).toCharArray();
+        if (existHash(poliz.get(inter)))
+        {
+            for (int s=0;s<hash.size();s++)
+                if (poliz.get(inter).equals(hash.get(s).name))
+                    if (Character.isDigit(chars[0])) {
+                        System.out.println("Existing this element("+poliz.get(inter + 1)+") is "+ hash.get(s).contain(Integer.parseInt(poliz.get(inter + 1))));
+                    } else if (Character.isLetter(chars[0]))
+                        for (int h = 0; h < data.size(); h++)
+                            if (data.get(h).name.equals(poliz.get(inter + 1)))
+                                System.out.println("Existing this element("+data.get(h).value+") is "+ hash.get(s).contain(Integer.parseInt(poliz.get(inter + 1))));
+
+        }    else System.out.println("This list isn't exist");
+        inter+=2;
+
     }
     public boolean existList (String a)
     {
@@ -455,13 +549,7 @@ public class Poliz {
     {
         inter++;
         char[] chars = poliz.get(inter+1).toCharArray();
-     /*   if (existList(poliz.get(inter)))
-        {
-            for (int s=0;s<list.size();s++)
-                if (poliz.get(inter).equals(list.get(s).name))
-                   System.out.println("Element is "+list.get(s).getElement(Integer.parseInt(poliz.get(inter+1))));
-        }
-*/          if (existList(poliz.get(inter)))
+         if (existList(poliz.get(inter)))
     {
         for (int s=0;s<list.size();s++)
             if (poliz.get(inter).equals(list.get(s).name))
@@ -586,12 +674,8 @@ public class Poliz {
         inter++;
 
         while (!poliz.get(inter+1).equals("!"))
-        langInter(); // ?????????
+        langInter(); 
 
         inter = Integer.parseInt(poliz.get(inter));
-
-
-
     }
-
 }

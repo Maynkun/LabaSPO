@@ -4,14 +4,12 @@ import java.util.ArrayList;
 
 public class Parser {
 
- //   boolean flagList = false;
-
     boolean flag = false;
     boolean flag2 = false;
     int brascets = 0;
     int i=-1;
     int error = 0;
-    ArrayList<ListOfLexems> lexems = new ArrayList<ListOfLexems>();
+    ArrayList<ListOfLexems> lexems;
 
     public Parser (ArrayList<ListOfLexems> lexems )
     {
@@ -35,9 +33,7 @@ public class Parser {
             if (lexems.get(i+1).value=="Var")
             {
                 expr_value ();
-                //System.out.println(lexems.get(i+1).lexem);
             }
-            //System.out.println("loop");
             else if (lexems.get(i+1).value.equals("KeyWordList"))
             {myList ();}
             else if (lexems.get(i+1).value.equals("KeyWordAdd"))
@@ -48,6 +44,14 @@ public class Parser {
             {getSize ();}
             else if (lexems.get(i+1).value.equals("KeyWordGetElement"))
             {getElement ();}
+            else if (lexems.get(i+1).value.equals("KeyWordHashSet"))
+            {myHash();}
+            else if (lexems.get(i+1).value.equals("KeyWordHashAdd"))
+            {myHashAdd();}
+            else if (lexems.get(i+1).value.equals("KeyWordHashRemove"))
+            {myHashRemove();}
+            else if (lexems.get(i+1).value.equals("KeyWordHashContain"))
+            {myHashContain();}
             else if (lexems.get(i+1).value.equals("KeyWordFor"))
             {expr_for ();}
             else if (lexems.get(i+1).value.equals("KeyWordWhile"))
@@ -57,9 +61,68 @@ public class Parser {
             else if (true)
             {System.out.println("error near" + lexems.get(i).lexem); i++; error++; return;}
         }
-        //else return;
-        //System.out.println("krya");
-        //System.out.println(lexems.get(i+1).lexem);
+    }
+    public void myHash()
+    {
+        try {Hash ();}
+        catch (PlotoyadnyKeksik e) {}
+
+        try {var ();}
+        catch (PlotoyadnyKeksik e) {}
+
+        try {Semicolon ();}
+        catch (PlotoyadnyKeksik e) {}
+    }
+    public void myHashAdd()
+    {
+        try {HashAdd ();}
+        catch (PlotoyadnyKeksik e) {}
+
+        try {var ();}
+        catch (PlotoyadnyKeksik e) {}
+
+        try {Comma();}
+        catch (PlotoyadnyKeksik e) {}
+
+        try {value();}
+        catch (PlotoyadnyKeksik e) {}
+
+        try {Semicolon ();}
+        catch (PlotoyadnyKeksik e) {}
+    }
+    public void myHashRemove()
+    {
+        try {HashRemove ();}
+        catch (PlotoyadnyKeksik e) {}
+
+        try {var ();}
+        catch (PlotoyadnyKeksik e) {}
+
+        try {Comma();}
+        catch (PlotoyadnyKeksik e) {}
+
+        try {value();}
+        catch (PlotoyadnyKeksik e) {}
+
+        try {Semicolon ();}
+        catch (PlotoyadnyKeksik e) {}
+    }
+    public void myHashContain()
+    {
+        try {HashContain ();}
+        catch (PlotoyadnyKeksik e) {}
+
+        try {var ();}
+        catch (PlotoyadnyKeksik e) {}
+
+        try {Comma();}
+        catch (PlotoyadnyKeksik e) {}
+
+        try {value();}
+        catch (PlotoyadnyKeksik e) {}
+
+        try {Semicolon ();}
+        catch (PlotoyadnyKeksik e) {}
     }
     public void myList ()
     {
@@ -135,30 +198,22 @@ public class Parser {
 
         try {var ();}
         catch (PlotoyadnyKeksik e) {}
-        //System.out.println(i+"   0");
 
         try {Equally ();}
         catch (PlotoyadnyKeksik e) {}
         if (lexems.get(i).value.equals("Semicolon")) return;
-        //System.out.println(i+"   1");
-
-        //while (lexems.get(i+1).value!="Semicolon")
-
 
         try {value_brasket ();}
         catch (PlotoyadnyKeksik e) {}
-        //System.out.println(i+"   2");
 
         if ((i<lexems.size()-1))
             while (!lexems.get(i+1).value.equals("Semicolon"))
             {
-                // System.out.println(lexems.get(i+1).lexem);
                 if (lexems.get(i+1).value =="Operation")
                     try {Operation();}
                     catch (PlotoyadnyKeksik e) {}
                 if (lexems.get(i).value =="Semicolon") return;
-
-                // проследить индекс в этом методе
+                
                 try {value_brasket ();}
                 catch (PlotoyadnyKeksik e) {}
                 if (lexems.get(i).value =="Semicolon") return;
@@ -178,8 +233,6 @@ public class Parser {
             System.out.println("May be you forgot '('  ");
             error++;
         }
-        //if (lexems.get(i).value =="Semicolon") return ();
-        //System.out.println(i+"   3");
     }
 
     public void expr_for ()
@@ -259,7 +312,9 @@ public class Parser {
                         &!lexems.get(i+1).value.equals("KeyWordElse")
                         &!lexems.get(i+1).value.equals("KeyWordList")&!lexems.get(i+1).value.equals("KeyWordAdd")
                         &!lexems.get(i+1).value.equals("KeyWordRemove")&!lexems.get(i+1).value.equals("KeyWordGetElement")
-                        &!lexems.get(i+1).value.equals("KeyWordGetSize"))
+                        &!lexems.get(i+1).value.equals("KeyWordGetSize")
+                &!lexems.get(i+1).value.equals("KeyWordHashSet")&!lexems.get(i+1).value.equals("KeyWordHashAdd")
+                &!lexems.get(i+1).value.equals("KeyWordHashRemove")&!lexems.get(i+1).value.equals("KeyWordHashContain"))
                 {
                     System.out.println("error near" + lexems.get(i).lexem);
                     break;
@@ -298,10 +353,7 @@ public class Parser {
         try {Close_bracket ();}
         catch (PlotoyadnyKeksik e) {}
         if (lexems.get(i).value.equals("Semicolon")) return ;
-
-        //try {Semicolon();}
-        // catch (PlotoyadnyKeksik e) {}
-
+        
         try {Open_brace();}
         catch (PlotoyadnyKeksik e) {}
 
@@ -311,7 +363,9 @@ public class Parser {
                         &!lexems.get(i+1).value.equals("KeyWordFor")&!lexems.get(i+1).value.equals("KeyWordIf")
                         &!lexems.get(i+1).value.equals("KeyWordElse") &!lexems.get(i+1).value.equals("KeyWordList")&!lexems.get(i+1).value.equals("KeyWordAdd")
                         &!lexems.get(i+1).value.equals("KeyWordRemove")&!lexems.get(i+1).value.equals("KeyWordGetElement")
-                        &!lexems.get(i+1).value.equals("KeyWordGetSize"))
+                        &!lexems.get(i+1).value.equals("KeyWordGetSize")
+                        &!lexems.get(i+1).value.equals("KeyWordHashSet")&!lexems.get(i+1).value.equals("KeyWordHashAdd")
+                        &!lexems.get(i+1).value.equals("KeyWordHashRemove")&!lexems.get(i+1).value.equals("KeyWordHashContain"))
                 {
                     System.out.println("error near" + lexems.get(i).lexem);
                     break;
@@ -340,7 +394,9 @@ public class Parser {
                     &!lexems.get(i+1).value.equals("KeyWordFor")&!lexems.get(i+1).value.equals("KeyWordIf")
                     &!lexems.get(i+1).value.equals("KeyWordElse") &!lexems.get(i+1).value.equals("KeyWordList")&!lexems.get(i+1).value.equals("KeyWordAdd")
                     &!lexems.get(i+1).value.equals("KeyWordRemove")&!lexems.get(i+1).value.equals("KeyWordGetElement")
-                    &!lexems.get(i+1).value.equals("KeyWordGetSize"))
+                    &!lexems.get(i+1).value.equals("KeyWordGetSize")
+                    &!lexems.get(i+1).value.equals("KeyWordHashSet")&!lexems.get(i+1).value.equals("KeyWordHashAdd")
+                    &!lexems.get(i+1).value.equals("KeyWordHashRemove")&!lexems.get(i+1).value.equals("KeyWordHashContain"))
             {
                 System.out.println("error near" + lexems.get(i).lexem);
                 break;
@@ -377,11 +433,7 @@ public class Parser {
         try {Close_bracket ();}
         catch (PlotoyadnyKeksik e) {}
         if (lexems.get(i).value.equals("Semicolon")) return ;
-
-        // try {Semicolon();}
-        //catch (PlotoyadnyKeksik e) {}
-
-
+        
         try {Open_brace();}
         catch (PlotoyadnyKeksik e) {}
 
@@ -391,7 +443,9 @@ public class Parser {
                     &!lexems.get(i+1).value.equals("KeyWordFor")&!lexems.get(i+1).value.equals("KeyWordIf")
                     &!lexems.get(i+1).value.equals("KeyWordElse") &!lexems.get(i+1).value.equals("KeyWordList")&!lexems.get(i+1).value.equals("KeyWordAdd")
                     &!lexems.get(i+1).value.equals("KeyWordRemove")&!lexems.get(i+1).value.equals("KeyWordGetElement")
-                    &!lexems.get(i+1).value.equals("KeyWordGetSize"))
+                    &!lexems.get(i+1).value.equals("KeyWordGetSize")
+                    &!lexems.get(i+1).value.equals("KeyWordHashSet")&!lexems.get(i+1).value.equals("KeyWordHashAdd")
+                    &!lexems.get(i+1).value.equals("KeyWordHashRemove")&!lexems.get(i+1).value.equals("KeyWordHashContain"))
             {
                 System.out.println("error near  " + lexems.get(i).lexem);
                 break;
@@ -402,17 +456,13 @@ public class Parser {
 
         try {Close_brace();}
         catch (PlotoyadnyKeksik e) {}
-
-//        System.out.println(lexems.get(i+1).lexem);
+        
         if (i+1<lexems.size()-1)
         if(lexems.get(i+1).lexem.equals("else"))
             expr_else ();
-        // если  не конец программы и следующее елсе то вызвать елс
-
     }
     public void brasket() throws PlotoyadnyKeksik
     {
-        //System.out.println(lexems.get(this.i).lexem+"    " + i + "  " + (!flag2));
         if(!flag2)i++;
         flag=true;
 
@@ -434,7 +484,6 @@ public class Parser {
     }
     public void value_brasket () throws PlotoyadnyKeksik
     {
-        //System.out.println(lexems.get(this.i).lexem+"    " + i + "  " );
         i++;
         this.flag2=true;
         try {value();}
@@ -453,7 +502,6 @@ public class Parser {
     }
     public void value () throws PlotoyadnyKeksik
     {
-        //System.out.println(lexems.get(this.i).lexem+"    " + i + "  " + (!flag2));
         if(!flag2)i++;
         flag=true;
         try {var();}
@@ -474,11 +522,9 @@ public class Parser {
     }
     public void var  () throws PlotoyadnyKeksik
     {
-        //System.out.println(lexems.get(this.i+1).lexem+"    " + i + "  " + (!flag));
         if (!flag)i++;
         if (!lexems.get(i).value.equals("Var"))
         {
-            //System.out.println(lexems.get(this.i).lexem);
             if(!flag)
             {
                 error++;
@@ -490,7 +536,6 @@ public class Parser {
     }
     public void Number () throws PlotoyadnyKeksik
     {
-        //System.out.println(lexems.get(this.i).lexem+"    " + i + "  " + (!flag));
         if(!flag) i++;
         if (!lexems.get(i).value.equals("Number"))
         {
@@ -704,3 +749,46 @@ public class Parser {
             throw  new PlotoyadnyKeksik ("Waiting Comma");
         }
     }
+    public void Hash () throws PlotoyadnyKeksik
+    {
+        i++;
+        if (!lexems.get(this.i).lexem.equals("HashSet"))
+        {
+            error++;
+            System.out.println("See  "+lexems.get(this.i).value+ " "+lexems.get(this.i).lexem+" but  HashSet");
+            throw  new PlotoyadnyKeksik ("Waiting HashSet");
+        }
+    }
+
+    public void HashAdd () throws PlotoyadnyKeksik
+    {
+        i++;
+        if (!lexems.get(this.i).lexem.equals("HashAdd"))
+        {
+            error++;
+            System.out.println("See  "+lexems.get(this.i).value+ " "+lexems.get(this.i).lexem+" but  HashAdd");
+            throw  new PlotoyadnyKeksik ("Waiting HashAdd");
+        }
+    }
+
+    public void HashRemove () throws PlotoyadnyKeksik
+    {
+        i++;
+        if (!lexems.get(this.i).lexem.equals("HashRemove"))
+        {
+            error++;
+            System.out.println("See  "+lexems.get(this.i).value+ " "+lexems.get(this.i).lexem+" but  HashRemove");
+            throw  new PlotoyadnyKeksik ("Waiting HashRemove");
+        }
+    }
+    public void HashContain () throws PlotoyadnyKeksik
+    {
+        i++;
+        if (!lexems.get(this.i).lexem.equals("HashContain"))
+        {
+            error++;
+            System.out.println("See  "+lexems.get(this.i).value+ " "+lexems.get(this.i).lexem+" but  HashContain");
+            throw  new PlotoyadnyKeksik ("Waiting HashContain");
+        }
+    }
+}

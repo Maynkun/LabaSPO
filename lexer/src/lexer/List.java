@@ -4,7 +4,7 @@ public class List {
     Node first;
     Node last;
     int size = 0;
-
+    String name;
 
     public int getSize()
     {
@@ -65,4 +65,45 @@ public class List {
        return element;
     }
 
+    public void removeElement (int element)
+    {
+       if (first!=null)
+       {
+           if (size==1&first.value==element)
+           {
+               first = null;
+               last = null;
+               size--;
+               return;
+           }
+           else if (first.value==element)
+           {
+               first=first.next;
+               size--;
+               return;
+           }
+           else if (last.value==element)
+           {
+               last=last.prev;
+               size--;
+               return;
+           }
+           else {
+               Node node = first.next;
+               size--;
+               while (node.next!=null){
+
+                   if (node.value==element)
+                   {
+                       node.prev.next=node.next;
+                       node.next.prev=node.prev;
+                       return;
+                   }
+                       node=node.next;
+               }
+           }
+       }
+       else  System.out.println("Element isn't exist");
+
+    }
 }
